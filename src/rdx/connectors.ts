@@ -1,6 +1,6 @@
+import { connect } from "react-redux";
 import { StoreData } from "../data/types";
 import { modifyOrder } from "./actionCreators";
-import { connect } from "react-redux";
 import ProductList from "../components/ProductList";
 
 const mapStateToProps = (data: StoreData) => ({

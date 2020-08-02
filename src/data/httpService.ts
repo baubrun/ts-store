@@ -10,7 +10,7 @@ const urls = {
   orders: `${protocol}://${hostname}:${port}/orders`,
 };
 
-export class HttpHandler {
+class httpService {
 
   loadProducts(cb: (products: Product[]) => void): void {
     Axios.get(urls.products).then((res) => cb(res.data));
@@ -28,3 +28,6 @@ export class HttpHandler {
     Axios.post(urls.orders, orderData).then((res) => cb(res.data.id));
   }
 }
+
+
+export default httpService

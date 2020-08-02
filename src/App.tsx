@@ -1,54 +1,30 @@
 import React, { Component } from "react";
-import { Product, Order } from "./data/entities";
-import ProductList from "./components/ProductList";
+import HttpService from "./data/httpService";
+import { addProduct } from "./rdx/actionCreators";
+import { ConnectedProductList } from "./rdx/connectors";
+import store from "./rdx/store";
 
-let testData: Product[] = [1, 2, 3, 4, 5].map((num) => ({
-  id: num,
-  name: `Prod${num}`,
-  category: `Cat${num % 2}`,
-  description: `Product ${num}`,
-  price: 100,
-}));
 
 interface Props {
   // no props required
 }
-interface State {
-  order: Order;
-}
 
-class App extends Component<Props, State> {
+class App extends Component<Props> {
+  private httpService = new HttpService();
+
   constructor(props: Props) {
     super(props);
-
-    this.state = {
-      order: new Order(),
-    };
-  }
-
-  addToOrder = (product: Product, quantity: number) => {
-    this.setState((state) => {
-      state.order.addProduct(product, quantity);
-      return state;
-    });
-  };
-
-  get categories(): string[] {
-    return [...new Set(testData.map((p) => p.category))];
+    this.httpService.loadProducts((data) =>
+      store.dispatch(addProduct(...data))
+    );
   }
 
   render() {
     return (
       <div className="App">
-        <ProductList
-          products={testData}
-          categories={this.categories}
-          order={this.state.order}
-          addToOrder={this.addToOrder}
-        />
+        <ConnectedProductList />
       </div>
     );
   }
 }
-
 export default App;

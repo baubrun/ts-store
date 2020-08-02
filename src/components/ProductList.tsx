@@ -48,9 +48,9 @@ class ProductList extends Component<Props, State> {
               />
             </div>
             <div className="col-9 p-2">
-              {this.products.map((p) => (
+              {this.products.map((p, idx) => (
                 <ProductItem
-                  key={p.id}
+                  key={idx}
                   product={p}
                   cb={this.props.addToOrder}
                 />
