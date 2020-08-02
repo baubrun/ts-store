@@ -6,7 +6,7 @@ export type Product = {
   price: number;
 };
 
-export class OrderLine {
+export class OrderItem {
   constructor(public product: Product, public quantity: number) {}
 
   get total(): number {
@@ -16,35 +16,35 @@ export class OrderLine {
 
 
 export class Order {
-    private lines = new Map<number, OrderLine>()
+    private items = new Map<number, OrderItem>()
 
-    constructor(initialLines?: OrderLine[]){
-        if (initialLines){
-            initialLines.forEach(item => this.lines.set(item.product.id, item))
+    constructor(initialitems?: OrderItem[]){
+        if (initialitems){
+            initialitems.forEach(item => this.items.set(item.product.id, item))
         }
     }
 
     public removeProduct(id: number){
-        this.lines.delete(id)
+        this.items.delete(id)
     }
 
     public addProduct(prod: Product, quantity: number){
-        if (this.lines.has(prod.id)){
+        if (this.items.has(prod.id)){
             this.removeProduct(prod.id)
         } else {
-            this.lines.set(prod.id, new OrderLine(prod, quantity))
+            this.items.set(prod.id, new OrderItem(prod, quantity))
         }
     }
 
-    get orderLines(): OrderLine[] {
-        return [...this.lines.values()]
+    get orderItems(): OrderItem[] {
+        return [...this.items.values()]
     }
 
     get productCount(): number {
-        return [...this.lines.values()].reduce((total, item) => total += item.quantity, 0)
+        return [...this.items.values()].reduce((total, item) => total += item.quantity, 0)
     }
 
     get total(): number {
-        return [...this.lines.values()].reduce((total, item) => total += item.total, 0)
+        return [...this.items.values()].reduce((total, item) => total += item.total, 0)
     }
 }
